@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.flywaydb</groupId>
     <artifactId>flyway-parent</artifactId>
-    <version>0-SNAPSHOT</version>
+    <version>5.1.flakm</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>Flyway: Database Migrations Made Easy.</description>
@@ -48,10 +48,6 @@
         <developerConnection>scm:git:https://github.com/flyway/flyway.git</developerConnection>
 
 
-
-
-
-
         <tag>HEAD</tag>
     </scm>
     <developers>
@@ -68,35 +64,14 @@
         <module>flyway-commandline</module>
 
 
-
-
-
-
-
-
-
-
     </modules>
 
     <distributionManagement>
-
-        <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>Nexus Release Repository</name>
-            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>bintray-flakm-repo</id>
+            <name>flakm-repo</name>
+            <url>https://api.bintray.com/maven/flakm/repo/flyway/;publish=1</url>
         </repository>
-
-
-
-
-
-
-
     </distributionManagement>
 
     <repositories>
@@ -116,14 +91,6 @@
             <id>flyway-repo</id>
             <url>s3://flyway-repo/release</url>
         </repository>
-
-
-
-
-
-
-
-
 
 
     </repositories>
@@ -264,60 +231,6 @@
             </dependency>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <dependency>
                 <groupId>com.microsoft.sqlserver</groupId>
                 <artifactId>mssql-jdbc</artifactId>
@@ -398,19 +311,6 @@
     <build>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -438,14 +338,6 @@
                     <artifactId>maven-bundle-plugin</artifactId>
                     <version>2.3.7</version>
                 </plugin>
-
-
-
-
-
-
-
-
 
 
                 <plugin>
@@ -486,7 +378,7 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <release>8</release>
+                    <!-- <release>8</release> -->
                     <source>1.8</source>
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
@@ -579,88 +471,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             <plugin>
