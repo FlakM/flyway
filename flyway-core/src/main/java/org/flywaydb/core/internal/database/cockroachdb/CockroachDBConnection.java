@@ -20,6 +20,7 @@ import org.flywaydb.core.internal.database.Connection;
 import org.flywaydb.core.internal.database.Schema;
 import org.flywaydb.core.internal.exception.FlywaySqlException;
 import org.flywaydb.core.internal.util.StringUtils;
+import org.postgresql.util.PSQLException;
 
 import java.sql.SQLException;
 import java.sql.Types;
@@ -29,16 +30,8 @@ import java.sql.Types;
  */
 public class CockroachDBConnection extends Connection<CockroachDBDatabase> {
     CockroachDBConnection(Configuration configuration, CockroachDBDatabase database,
-                          java.sql.Connection connection
-
-
-
-    ) {
-        super(configuration, database, connection, Types.NULL
-
-
-
-        );
+                          java.sql.Connection connection) {
+        super(configuration, database, connection, Types.NULL);
     }
 
     @Override
@@ -48,7 +41,18 @@ public class CockroachDBConnection extends Connection<CockroachDBDatabase> {
 
     @Override
     protected String getCurrentSchemaNameOrSearchPath() throws SQLException {
-        return jdbcTemplate.queryForString("SHOW database");
+        try {
+            jdbcTemplate.getConnection().setAutoCommit(true);
+            return jdbcTemplate.queryForString("SHOW database");
+        }catch(PSQLException ex){
+            if(ex.getMessage().startsWith("ERROR: database") &&  ex.getMessage().endsWith(" does not exist")){
+                return null;
+            }else{
+                throw ex;
+            }
+        }finally {
+            jdbcTemplate.getConnection().setAutoCommit(false);
+        }
     }
 
     @Override

@@ -108,6 +108,7 @@ public class CockroachDBDatabase extends Database<CockroachDBConnection> {
     protected Pair<Integer, Integer> determineMajorAndMinorVersion() {
         String version;
         try {
+            getMainConnection().getJdbcTemplate().execute("set database = system");
             version = getMainConnection().getJdbcTemplate().queryForString("SELECT value FROM crdb_internal.node_build_info where field='Version'");
             if (version == null) {
                 version = getMainConnection().getJdbcTemplate().queryForString("SELECT value FROM crdb_internal.node_build_info where field='Tag'");

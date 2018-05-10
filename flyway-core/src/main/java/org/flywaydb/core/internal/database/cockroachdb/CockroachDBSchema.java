@@ -40,7 +40,12 @@ public class CockroachDBSchema extends Schema<CockroachDBDatabase> {
 
     @Override
     protected boolean doExists() throws SQLException {
-        return jdbcTemplate.queryForBoolean("SELECT EXISTS ( SELECT 1 FROM pg_database WHERE datname=? )", name);
+        jdbcTemplate.getConnection().setAutoCommit(true);
+        try {
+            return jdbcTemplate.queryForStringList("show databases").contains(name);
+        } finally {
+            jdbcTemplate.getConnection().setAutoCommit(false);
+        }
     }
 
     @Override
@@ -53,23 +58,26 @@ public class CockroachDBSchema extends Schema<CockroachDBDatabase> {
                     "  AND table_type='BASE TABLE'" +
                     ")", name);
         }
-        return !jdbcTemplate.queryForBoolean("SELECT EXISTS (" +
-                "  SELECT 1" +
-                "  FROM information_schema.tables " +
-                "  WHERE table_catalog=?" +
-                "  AND table_schema='public'" +
-                "  AND table_type='BASE TABLE'" +
-                ")", name);
+        jdbcTemplate.getConnection().setAutoCommit(true);
+        try {
+            return jdbcTemplate.queryForStringList("show tables from \"" + name + "\"").isEmpty();
+        } finally {
+            jdbcTemplate.getConnection().setAutoCommit(false);
+        }
     }
 
     @Override
     protected void doCreate() throws SQLException {
+        jdbcTemplate.getConnection().setAutoCommit(true);
         jdbcTemplate.execute("CREATE DATABASE " + database.quote(name));
+        jdbcTemplate.getConnection().setAutoCommit(false);
     }
 
     @Override
     protected void doDrop() throws SQLException {
+        jdbcTemplate.getConnection().setAutoCommit(true);
         jdbcTemplate.execute("DROP DATABASE " + database.quote(name));
+        jdbcTemplate.getConnection().setAutoCommit(false);
     }
 
     @Override

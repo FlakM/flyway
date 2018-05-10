@@ -21,6 +21,7 @@ import org.flywaydb.core.internal.database.Database;
 import org.flywaydb.core.internal.util.jdbc.JdbcTemplate;
 import org.flywaydb.core.internal.database.Schema;
 import org.flywaydb.core.internal.database.Table;
+import org.postgresql.util.PSQLException;
 
 import java.sql.SQLException;
 
@@ -57,14 +58,19 @@ public class CockroachDBTable extends Table {
                     "   AND    table_name = ?\n" +
                     ")", schema.getName(), name);
         }
-
-        return jdbcTemplate.queryForBoolean("SELECT EXISTS (\n" +
-                "   SELECT 1\n" +
-                "   FROM   information_schema.tables \n" +
-                "   WHERE  table_catalog = ?\n" +
-                "   AND    table_schema = 'public'\n" +
-                "   AND    table_name = ?\n" +
-                ")", schema.getName(), name);
+        try {
+            jdbcTemplate.getConnection().setAutoCommit(true);
+            return jdbcTemplate.queryForStringList("show tables from \"" + schema.getName() + "\"").contains(name);
+        } catch (PSQLException ex) {
+            if (ex.getMessage().endsWith("does not match any valid database or schema")) {
+                return false;
+            } else {
+                throw ex;
+            }
+        }finally {
+            jdbcTemplate.getConnection().setAutoCommit(false);
+            jdbcTemplate.getConnection().commit();
+        }
     }
 
     @Override
