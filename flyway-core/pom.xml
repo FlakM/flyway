@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-parent</artifactId>
-        <version>5.1.flakm</version>
+        <version>5.1.sasol</version>
     </parent>
     <artifactId>flyway-core</artifactId>
     <packaging>jar</packaging>

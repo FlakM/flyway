@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.flywaydb</groupId>
     <artifactId>flyway-parent</artifactId>
-    <version>5.1.flakm</version>
+    <version>5.1.sasol</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>Flyway: Database Migrations Made Easy.</description>
@@ -59,19 +59,15 @@
 
     <modules>
         <module>flyway-core</module>
-        <module>flyway-gradle-plugin</module>
-        <module>flyway-maven-plugin</module>
-        <module>flyway-commandline</module>
-
 
     </modules>
 
     <distributionManagement>
         <repository>
-            <id>bintray-flakm-repo</id>
-            <name>flakm-repo</name>
-            <url>https://api.bintray.com/maven/flakm/repo/flyway/;publish=1</url>
-        </repository>
+            <id>bintray</id>
+            <name>releases</name>
+            <url>https://repository.ravenetics.com/nexus/repository/rave-mvn-releases/ </url>
+        </repository>    
     </distributionManagement>
 
     <repositories>
@@ -87,10 +83,10 @@
             <id>flyway-repo-public</id>
             <url>https://flywaydb.org/repo</url>
         </repository>
-        <repository>
+        <!-- <repository>
             <id>flyway-repo</id>
             <url>s3://flyway-repo/release</url>
-        </repository>
+        </repository> -->
 
 
     </repositories>
